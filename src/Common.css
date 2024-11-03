@@ -34,11 +34,12 @@
   background-color: rgba(38, 210, 147, 255);
 }
 
-.boss_div {
+
+
+/* Registration background */
+.background_reg {
   background-color: rgba(38, 210, 147, 255);
 }
-
-
 
 .registration_form {
   background-color: rgba(216, 215, 208, 255);
@@ -46,21 +47,17 @@
 
 
 
-
+/* login page */
 .title_bar_loginpage h1 {
   margin-top: 5px;
   font-size: 70px;
   font-weight: 700;
   color: rgb(12, 130, 226);
   text-decoration: underline ;
-
-
 }
 
-
-
 .title_bar_loginpage h2 {
-  font-size: 25px;
+  font-size: 20px;
   font-weight: 400;
   text-shadow: 0cqh;
 

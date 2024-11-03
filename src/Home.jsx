@@ -1,12 +1,20 @@
-import React from 'react'
-import "./Common.css"
+import React from "react";
+import "./Common.css";
+import Sidebar from "./Sidebar";
 
 const Home = () => {
   return (
-    <div>
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam, corporis.
-    </div>
-  )
-}
+    <main className="flex">
+      <Sidebar />
+<div className="my-[30px] rounded-[20px]">
+  <img className="rounded-[20px]" src="ss.png" alt="" />
+</div>
 
-export default Home
+
+
+
+    </main>
+  );
+};
+
+export default Home;

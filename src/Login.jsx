@@ -1,8 +1,55 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Common.css";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 const Login = () => {
+  // States.........................
+  const auth = getAuth();
+  let nevigate = useNavigate("");
+  let [email, setEmail] = useState("");
+  let [password, setPassword] = useState("");
+  let [loginErr, setLoginErr] = useState("");
+
+  // Function......
+  let handleEmail = (e) => {
+    setEmail(e.target.value);
+  };
+  let handlePassword = (e) => {
+    setPassword(e.target.value);
+  };
+
+  let handleLogin = () => {
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        const auth = getAuth();
+        signInWithEmailAndPassword(auth, email, password)
+          .then((userCredential) => {
+            // Signed in
+            const user = userCredential.user;
+            // ...
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            console.log(errorCode);
+            const errorMessage = error.message;
+          });
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        {
+          errorCode && setLoginErr("Invalid credential");
+        }
+        const errorMessage = error.message;
+        console.log(errorMessage);
+      });
+  };
+
   return (
     <div className="w-full h-screen login_background  flex">
       <div className="w-[60%] h-full  ">
@@ -15,8 +62,15 @@ const Login = () => {
         </div>
       </div>
 
+      {/* // Login Part.............. */}
       <div className="ml-[180px] mt-10">
         <div>
+          {/* <div className="title_bar_loginpage  ">
+            <h1 className="">ChatZilla</h1>
+            <h2 className="font-sans mt-[-15px] ">
+              Where Messages Come Alive
+            </h2>
+          </div> */}
           <div className="  py-6 flex flex-col  sm:py-12 ">
             <div className="relative py-3 sm:max-w-xl sm:mx-auto">
               <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-sky-500 shadow-2xl transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl "></div>
@@ -25,13 +79,14 @@ const Login = () => {
                 <form>
                   <div className="space-y-6">
                     <div>
-                      <p className="mb-10 text-2xl tracking-wider font-semibold ">
-                        Sign in to your account
+                      <p className="mb-[20px] text-xl tracking-wider font-semibold font-sans text-gray-600 text-[20px]">
+                        Sign in to ChatZilla
                       </p>
                       <label className="text-gray-800 text-sm mb-2 block">
                         Email ID
                       </label>
                       <input
+                        onChange={handleEmail}
                         name="email"
                         type="text"
                         className="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500"
@@ -43,11 +98,17 @@ const Login = () => {
                         Password
                       </label>
                       <input
+                        onChange={handlePassword}
                         name="password"
                         type="password"
                         className="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500"
                         placeholder="Enter password"
                       />
+
+                      {loginErr && (
+                        <p className="text-red-600 mt-[5px] ">{loginErr}</p>
+                      )}
+
                       <div className="flex justify-end mt-[10px]"></div>
                     </div>
                   </div>
@@ -55,13 +116,14 @@ const Login = () => {
                   {/* LOGIN BUTTON */}
                   <div className="!mt-[20px]">
                     <button
+                      onClick={handleLogin}
                       type="button"
                       className=" registration_btn w-full py-3 px-4 text-sm tracking-wider font-semibold rounded-md text-white bg-blue-600 focus:outline-none  focus:ring-blue-600 focus:ring-offset-red-200 transition ease-in duration-200 text-center  shadow-md  focus:ring-2 focus:ring-offset-2 "
                     >
                       LOGIN
                     </button>
                   </div>
-
+                  {/* Google login button */}
                   <button
                     type="button"
                     className="py-3 px-4 flex justify-center items-center mt-[10px] bg-red-600 hover:bg-red-700 focus:ring-red-500 focus:ring-offset-red-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg "
@@ -97,6 +159,11 @@ const Login = () => {
             <h1>ChatZilla</h1>
             <h2>Where Messages Come Alive</h2>
           </div>
+
+          {/* <div className="title_bar_loginpage  ">
+            <h1 className="">ChatZilla</h1>
+            <h2 className="font-sans mt-[-15px] ">Where Messages Come Alive</h2>
+          </div> */}
         </div>
       </div>
     </div>

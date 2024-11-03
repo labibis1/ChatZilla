@@ -2,10 +2,18 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import { useNavigate } from "react-router-dom";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+  sendEmailVerification,
+} from "firebase/auth";
 
 const Registration = () => {
   //........................States......................
-
+  const auth = getAuth();
+  let nevigate = useNavigate("");
   let [name, setName] = useState("");
   let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
@@ -16,6 +24,7 @@ const Registration = () => {
 
   let [passwordShow, setPasswordShow] = useState(false);
   let [popupBox, setPopupBox] = useState();
+  let[accErrCode, setAccErrCode]=useState("")
   //........................Function......................
   let handleName = (e) => {
     setName(e.target.value);
@@ -44,18 +53,58 @@ const Registration = () => {
 
     if (!password) {
       setPasswordErr("Password required");
-    } 
-    
-    else if (email && name && password) {
+
+
+    } else if (email && name && password  ) {
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          updateProfile(auth.currentUser, {
+            displayName: name,
+            photoURL:
+              "https://templates.joomla-monster.com/joomla30/jm-news-portal/components/com_djclassifieds/assets/images/default_profile.png",
+          })
+            .then(() => {
+              sendEmailVerification(auth.currentUser).then(() => {
+                // Email verification sent!
+                // ...
+                setTimeout(() => {
+                  nevigate("/");
+                }, 1000);
+              });
+
+              const user = userCredential.user;
+              console.log(user);
+            })
+            .catch((error) => {});
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          {errorCode && 
+            setAccErrCode("Email already in use")
+          }
+          setTimeout(() => {
+            setAccErrCode(false)
+          }, 1500);
+
+          // setAccErrCode(errorCode)
+          console.log(errorMessage);
+
+          // ..
+        });
+
       setEmail("");
       setName("");
       setPassword("");
       setPopupBox("REGISTRATION SUCCESSFULL");
+      setTimeout(() => {
+        setPopupBox(false)
+      }, 2000);
     }
   };
 
   return (
-    <div className="flex  boss_div w-full h-screen bg-red-700">
+    <div className="flex  background_reg w-full h-screen">
       <div className="div1 w-[35%] bg-white justify-center items-center my-auto shadow-2xl">
         <img src="2.webp" alt="" />
       </div>
@@ -184,12 +233,22 @@ const Registration = () => {
       </div>
 
       {popupBox && (
-        <div className="bg-blue-600 shadow-2xl w-[420px] h-[60px] absolute top-[60px] left-[740px] animate-bounce rounded-[50px] ">
+        <div className="bg-blue-600 shadow-2xl w-[420px] h-[60px] absolute top-[50px] left-[655px] animate-bounce rounded-[50px] ">
           <h1 className="text-white text-[25px] font-semibold flex justify-center mt-[9px]   ">
             {popupBox}
           </h1>
         </div>
       )}
+
+      {accErrCode && 
+           <div className="bg-red-600 shadow-2xl w-[420px] h-[60px] absolute top-[50px] left-[655px] animate-bounce rounded-[50px] ">
+           <h1 className="text-white text-[25px] font-semibold flex justify-center mt-[9px]   ">
+             {accErrCode}
+           </h1>
+         </div>}
+
+
+      
     </div>
   );
 };
