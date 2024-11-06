@@ -104,7 +104,7 @@ const Registration = () => {
   };
 
   return (
-    <div className="flex  background_reg w-full h-screen">
+    <div className="flex  background_reg w-full h-screen  ">
       <div className="div1 w-[35%] bg-white justify-center items-center my-auto shadow-2xl">
         <img src="2.webp" alt="" />
       </div>

@@ -10,20 +10,26 @@ import {
 import Login from "./Login";
 import Registration from "./Registration";
 import Home from "./Home";
-import Login2 from "./Login2";
 import Dashboard from "./Dashboard";
+import Notifications from "./Notifications";
+import Profile from "./Profile";
+import Message from "./Message";
+import Rootlayout from "./layout/Rootlayout";
+import Settings from "./Settings";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-      <Route path="/" element={<Login />}></Route>
+      <Route path="/login" element={<Login />}></Route>
       <Route path="/registration" element={<Registration />}></Route>
-      <Route path="/home" element={<Home />}></Route>
-      <Route path="/" element={<Login />}></Route>
-      <Route path="/login2" element={< Login2 />}></Route>
-      <Route path="/dash" element={<Dashboard />}></Route>
-
-
+      <Route path="/" element={<Rootlayout />}>
+        <Route path="index" element={<Home />}></Route>
+        <Route path="/dashboard" element={<Dashboard />}></Route>
+        <Route path="/notifications" element={<Notifications />}></Route>
+        <Route path="/profile" element={<Profile />}></Route>
+        <Route path="/message" element={<Message />}></Route>
+        <Route path="/settings" element={<Settings />}></Route>
+      </Route>
     </>
   )
 );
