@@ -2,11 +2,19 @@ import React from "react";
 
 const Notifications = () => {
   return (
-    <div className="w-full">
-      <div className="h-screen w-[1400px] bg-red-500 mx-auto mt-[30px] rounded-3xl pt-10 ">
-      <h1 className="text-white flex justify-center text-[50px]">This is Notification Page</h1>
-
-      </div>
+    <div className="video-container">
+      <video autoPlay loop muted playsInline className="background-video bg-cover w-full h-screen">
+        <source src="../public/video/background.mp4" type="video/mp4" />
+        <div className=" ml-[30px] text-center ">
+            <h1 className="mt-[5px] text-[100px] font-bold text-sky-500 underline  ">
+              Chatzilla
+            </h1>
+            <h2 className="text-[20px] mt-[-25px] font-medium ">
+              Where Messages Come Alive
+            </h2>
+          </div>
+      </video>
+     
     </div>
   );
 };
